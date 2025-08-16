@@ -6,3 +6,5 @@ export type Transaction = {
   mutation: number;
   endBalance: number;
 };
+
+export type FailedTransaction = Transaction & { issues: string[] };
