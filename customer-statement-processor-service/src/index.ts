@@ -2,7 +2,10 @@ import express, { Request, Response } from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
 import morgan from "morgan";
-import { statementRoutes } from "./routes";
+
+import TransactionRoutes from "./routes/transaction";
+import AppRoutes from "./routes/app";
+import StorageRoutes from "./routes/storage";
 
 const app = express();
 
@@ -12,12 +15,13 @@ app.use(bodyParser.json());
 app.use(cors());
 app.use(morgan("common"));
 
-/** Health API endpoint */
-app.get("/api/health", async (_req, res) => {
-  res.status(200).json({ message: "API Health sehr gut...." });
-});
+const router = express.Router();
 
-app.use("/api/statement", statementRoutes);
+router.use("/statement", TransactionRoutes);
+router.use("/storage", StorageRoutes);
+router.use(AppRoutes);
+
+app.use("/api", router);
 
 /** Initial listener to test out. */
 app.listen(3000, () => {

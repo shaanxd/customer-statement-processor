@@ -68,7 +68,6 @@ export const isTransactionBalanceValid = ({
   endBalance,
 }: Transaction) =>
   /** Based on assumption that the calculation will always fixed to the nearest second decimal. */
-
   Math.round((startBalance + mutation) * 100) / 100 === endBalance;
 
 export const getValidatedTransactions = (transactions: Transaction[]) => {

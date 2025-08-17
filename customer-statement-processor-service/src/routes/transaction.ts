@@ -1,6 +1,6 @@
 import express from "express";
 
-import StatementController from "../controllers/statement";
+import TransactionController from "../controllers/transaction";
 import upload from "../utilities/upload";
 
 const router = express.Router();
@@ -8,7 +8,7 @@ const router = express.Router();
 router.post(
   "/validate",
   upload.single("file"),
-  StatementController.validateStatement
+  TransactionController.postValidateTransactions
 );
 
 export default router;
