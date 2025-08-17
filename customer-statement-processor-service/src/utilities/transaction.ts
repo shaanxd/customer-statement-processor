@@ -89,7 +89,7 @@ export const getValidatedTransactions = (transactions: Transaction[]) => {
       }
 
       if (!isBalanceValid) {
-        issues.push("Math ain't mathing.");
+        issues.push("Invalid balance.");
       }
 
       if (issues.length !== 0) {

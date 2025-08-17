@@ -36,7 +36,7 @@ const postValidateTransactions = async (
   /** Write transactions to PDF */
   await writeTransactionsToPdf(fileName, invalid);
 
-  response.status(200).json({ message: { valid, invalid } });
+  response.status(200).json({ valid, invalid });
 };
 
 export default { postValidateTransactions };

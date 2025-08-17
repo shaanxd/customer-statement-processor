@@ -1,4 +1,4 @@
-import express, { Request, Response } from "express";
+import express from "express";
 import bodyParser from "body-parser";
 import cors from "cors";
 import morgan from "morgan";
@@ -17,7 +17,7 @@ app.use(morgan("common"));
 
 const router = express.Router();
 
-router.use("/statement", TransactionRoutes);
+router.use("/transactions", TransactionRoutes);
 router.use("/storage", StorageRoutes);
 router.use(AppRoutes);
 
