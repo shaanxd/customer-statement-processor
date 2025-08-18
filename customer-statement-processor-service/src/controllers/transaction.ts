@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { v4 } from "uuid";
 
 import { isMatchingExtension } from "../utilities/file";
 import {
@@ -7,6 +8,7 @@ import {
   getTransactionsFromXML,
   writeTransactionsToPdf,
 } from "../utilities/transaction";
+import APIError from "../exceptions";
 
 const postValidateTransactions = async (
   request: Request,
@@ -19,7 +21,6 @@ const postValidateTransactions = async (
    * Get file name without extension since we know that the
    * filename would be a uuid here.
    */
-  const fileName = file.filename.split(".")[0] || "";
 
   /** Check if the file is a CSV file. */
   const isCSV = isMatchingExtension(request.file!, /csv/);
@@ -33,10 +34,16 @@ const postValidateTransactions = async (
   /** Get invalid transactions from the above read transactions. */
   const { valid, invalid } = getValidatedTransactions(transactions);
 
-  /** Write transactions to PDF */
-  await writeTransactionsToPdf(fileName, invalid);
+  let filePath = null;
 
-  response.status(200).json({ valid, invalid });
+  if (invalid) {
+    const fileName = v4();
+    /** Write transactions to PDF */
+    await writeTransactionsToPdf(fileName, invalid);
+    filePath = `storage/reports/${fileName}.pdf`;
+  }
+
+  response.status(200).json({ valid, invalid, filePath });
 };
 
 export default { postValidateTransactions };

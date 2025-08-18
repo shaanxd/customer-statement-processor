@@ -4,11 +4,12 @@ import { XMLParser } from "fast-xml-parser";
 import PDFDocument from "pdfkit";
 
 import { Transaction, FailedTransaction } from "../types";
+import APIError from "../exceptions";
 
 export const getTransactionsFromCSV = (file: Express.Multer.File) => {
   try {
     /** Read the file content to a buffer */
-    const data = fs.readFileSync(file.path);
+    const data = file.buffer;
     /** Need to ignore first line since we know what the data is already */
     const parsedCSVData = parse(data, { delimiter: ",", from_line: 2 });
 
@@ -37,14 +38,17 @@ export const getTransactionsFromCSV = (file: Express.Multer.File) => {
 
     return transactions;
   } catch (error) {
-    throw new Error("Error occurred while parsing XML data. Please try again.");
+    throw new APIError(
+      400,
+      "Error occurred while parsing CSV data. Please try again with a valid CSV file."
+    );
   }
 };
 
 export const getTransactionsFromXML = (file: Express.Multer.File) => {
   try {
     /** Read the file content to a buffer */
-    const data = fs.readFileSync(file.path);
+    const data = file.buffer;
 
     const {
       records: { record },
@@ -58,7 +62,10 @@ export const getTransactionsFromXML = (file: Express.Multer.File) => {
     /** TODO: Add yup validation to make sure that the transaction fits the schema */
     return record as Transaction[];
   } catch (error) {
-    throw new Error("Error occurred while parsing XML data. Please try again.");
+    throw new APIError(
+      400,
+      "Error occurred while parsing XML data. Please try again with a valid XML file."
+    );
   }
 };
 
@@ -101,7 +108,8 @@ export const getValidatedTransactions = (transactions: Transaction[]) => {
 
     return { valid, invalid };
   } catch (error) {
-    throw new Error(
+    throw new APIError(
+      500,
       "Error occurred while validating transaction data. Please try again."
     );
   }
@@ -133,34 +141,12 @@ export const writeTransactionsToPdf = (
     doc.fontSize(10);
     doc.table({
       data: [
-        [
-          "Reference",
-          "Account Number",
-          "Description",
-          "Start Balance",
-          "Mutation",
-          "End Balance",
-          "Issues",
-        ],
-        ...transactions.map(
-          ({
-            reference,
-            accountNumber,
-            description,
-            startBalance,
-            mutation,
-            endBalance,
-            issues,
-          }) => [
-            reference,
-            accountNumber,
-            description,
-            startBalance.toString(),
-            mutation.toString(),
-            endBalance.toString(),
-            issues.join("\n"),
-          ]
-        ),
+        ["Reference", "Description", "Issues"],
+        ...transactions.map(({ reference, description, issues }) => [
+          reference,
+          description,
+          issues.join("\n"),
+        ]),
       ],
     });
     doc.end();
@@ -169,6 +155,6 @@ export const writeTransactionsToPdf = (
       resolve(true);
     });
     stream.on("error", () => {
-      reject();
+      reject("Error occurred while writing PDF report. Please try again.");
     });
   });

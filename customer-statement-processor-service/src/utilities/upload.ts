@@ -1,16 +1,7 @@
 import multer from "multer";
-import { v4 } from "uuid";
-import path from "path";
 import { isMatchingExtension } from "./file";
 
-const storage = multer.diskStorage({
-  destination: (_req, _file, callback) => {
-    callback(null, "./storage/uploads/");
-  },
-  filename: (_req, file, callback) => {
-    callback(null, `${v4()}${path.extname(file.originalname)}`);
-  },
-});
+const storage = multer.memoryStorage();
 
 const upload = multer({
   storage: storage,
