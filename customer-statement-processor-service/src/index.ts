@@ -34,6 +34,6 @@ app.use((err: Error, _req: Request, res: Response, _next: NextFunction) => {
 });
 
 /** Initial listener to test out. */
-app.listen(3000, () => {
+app.listen(process.env.PORT || 3000, () => {
   console.log("App is running!");
 });
