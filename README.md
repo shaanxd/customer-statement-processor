@@ -49,6 +49,12 @@ Reference,Account Number,Description,Start Balance,Mutation,End Balance
 
 #### Try it out
 
+```bash
+cd customer-statement-processor-frontend
+npm install
+npm run dev
+```
+
 ### Backend: Node.js Express Application
 
 #### Features
@@ -61,7 +67,7 @@ Reference,Account Number,Description,Start Balance,Mutation,End Balance
 - Generates a PDF report listing any invalid transactions.
 - Sends the PDF report back to the frontend as a response.
 
-#### Built Using (Backend)
+#### Built Using
 
 - [Express](https://expressjs.com/) – Web framework for Node.js
 - [csv-parse](https://csv.js.org/parse/) – For CSV file parsing
@@ -69,6 +75,14 @@ Reference,Account Number,Description,Start Balance,Mutation,End Balance
 - [Multer](https://github.com/expressjs/multer) – For file uploads
 - [Morgan](https://github.com/expressjs/morgan) – For HTTP request logging
 - [PDFKit](https://pdfkit.org/) – For PDF generation
+
+#### Try it out
+
+```bash
+cd customer-statement-processor-backend
+npm install
+npm run dev
+```
 
 ### Working Demo (Hosted via railway.app)
 
