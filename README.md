@@ -2,6 +2,33 @@
 
 Application to read, parse and validate CSV/XML files while generating a PDF of the validation results.
 
+## Assumptions
+
+- Only valid CSV/XML files are provided. (Structure given below).
+- Responses are returned in real time (hence no queuing jobs, leaning towards a straightforward REST API)
+- No persistance on processed transactions, a file is generated and provided to the user in real time. The file is saved to be viewable later in the server but only consists of the reference, descriptions and the relevant issues of the transactions.
+
+For XML files,
+
+```
+<records>
+  <record reference="111551">
+    <accountNumber>NL94DHJ2939FFSK</accountNumber>
+    <description>Coffee money</description>
+    <startBalance>94.9</startBalance>
+    <mutation>+20.3</mutation>
+    <endBalance>100</endBalance>
+  </record>
+</records>
+```
+
+For CSV files,
+
+```
+Reference,Account Number,Description,Start Balance,Mutation,End Balance
+111551,NL94DHJ2939FFSK,Coffee money,94.9,20.3,100
+```
+
 ## System Components
 
 ### Frontend: React Application
@@ -47,3 +74,8 @@ Application to read, parse and validate CSV/XML files while generating a PDF of 
 
 - **Service (API)**: [csp-service-production-746a.up.railway.app](csp-service-production-746a.up.railway.app)
 - **Frontend**: [customer-statement-processor-production.up.railway.app](customer-statement-processor-production.up.railway.app)
+
+## Future Improvements
+
+- Add schema validation for transactions, to make sure every transaction has the existing properties. (Zod)
+- Convert file input to a dropzone (I swear drag and drop is very cool...)
