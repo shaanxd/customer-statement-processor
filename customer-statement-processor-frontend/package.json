@@ -8,7 +8,8 @@
     "prod": "http-server dist -p $PORT",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "test": "npx playwright test"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^2.8.2",
@@ -24,7 +25,9 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.33.0",
+    "@playwright/test": "^1.54.2",
     "@tailwindcss/typography": "^0.5.16",
+    "@types/node": "^24.3.0",
     "@types/react": "^19.1.10",
     "@types/react-dom": "^19.1.7",
     "@vitejs/plugin-react": "^5.0.0",

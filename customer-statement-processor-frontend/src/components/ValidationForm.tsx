@@ -19,6 +19,7 @@ const ValidationForm: FC<ValidationFormProps> = ({ isLoading, onSubmit }) => {
 
   return (
     <form
+      data-testid="statement-validation-form"
       className="flex flex-col flex-1 w-full shadow-sm gap-4"
       onSubmit={handleSubmit(handleFormSubmit)}
     >
